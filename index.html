@@ -1,0 +1,463 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>班级__________姓名____________________</title>
+    <script src="data.js"></script>
+    <style>
+body {
+  margin: 0;
+  padding: 0;
+}
+
+#wrapper {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  overflow: hidden;
+  position: absolute;
+  width: 100%;
+}
+
+article {
+  display: block;
+  flex: 1;
+  overflow-y: auto;
+}
+
+
+article.hideChar .mi {
+  color: transparent;
+}
+
+section {
+}
+
+h1 {
+  display: block;
+  page-break-after: avoid;
+}
+
+.unit {
+  display: block;
+  page-break-before: avoid;
+}
+
+.word {
+  display: inline-block;
+  font-size: 30pt;
+  margin-bottom: .5em;
+  margin-right: .5em;
+  white-space: no-wrap;
+}
+
+#wrapper .word {
+  font-size: 30pt;
+}
+
+#wrapper.mid .word {
+  font-size: 24pt;
+}
+
+#wrapper.sml .word {
+  font-size: 18pt;
+}
+
+.letter {
+  border: 1px solid #000;
+  display: inline-block;
+  page-break-inside: avoid;
+  position: relative;
+}
+
+.letter:not(:first-child) {
+  margin-left: -1px;
+}
+
+.pinyin {
+  border-bottom: 1px solid #000;
+  display: block;
+  font-size: .3em;
+  font-family: monospace;
+  height: 1.2em;
+  line-height: 1.3em;
+  text-align: center;
+}
+
+.mi {
+  background-image: linear-gradient(90deg, rgba(0,0,0,0.1), rgba(0,0,0,0.1) 75%, transparent 75%, transparent 100%),
+                    linear-gradient(180deg, rgba(0,0,0,0.1), rgba(0,0,0,0.1) 75%, transparent 75%, transparent 100%);
+  background-position: center center;
+  background-repeat: repeat-x,
+                     repeat-y;
+  background-size: 12px 1px,
+                   1px 12px;
+  display: block;
+  color: rgba(0,0,0,0.1);
+  font-family: KaiTi, STKaiti;
+  font-size: 1em;
+  line-height: 1.2em;
+  height: 1.3em;
+  position: relative;
+  text-align: center;
+  width: 1.3em;
+}
+
+.mi::before {
+  background-image: linear-gradient(90deg, rgba(0,0,0,0.1), rgba(0,0,0,0.1) 75%, transparent 75%, transparent 100%),
+                    linear-gradient(180deg, rgba(0,0,0,0.1), rgba(0,0,0,0.1) 75%, transparent 75%, transparent 100%);
+  background-position: center center;
+  background-repeat: repeat-x,
+                     repeat-y;
+  background-size: 12px 1px,
+                   1px 12px;
+  content: '';
+  position: absolute;
+  transform: rotate(-45deg);
+  left: -0.27em;
+  right: -0.27em;
+  top: -0.27em;
+  bottom: -0.27em;
+  width: 1.84em;
+  height: 1.84em;
+}
+
+#editor {
+  background-color: #eee;
+  border-top: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 24em;
+}
+
+.toolbar {
+  box-sizing: border-box;
+  padding: 1em;
+}
+
+.toolbar {
+  padding-bottom: 0;
+}
+
+.toolbar {
+  display: flex;
+  flex-direction: row;
+}
+
+.toolbar > div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.toolbar > div:last-child {
+  flex: 1;
+  justify-content: flex-end;
+}
+
+input,
+select {
+  outline: none;
+}
+
+#unitSelector {
+  font-size: 1em;
+  width: 10em;
+}
+
+#charToggler {
+  visibility: hidden;
+}
+
+label {
+  cursor: pointer;
+}
+
+input[type="button"] {
+  border: 1px solid #ccc;
+  cursor: pointer;
+  font-size: 0.8em;
+  margin-left: 0.5em;
+}
+
+label:hover {
+  color: #33f;
+}
+
+#wordList {
+  flex: 1;
+  overflow-y: auto;
+  margin: 0.2em 0;
+}
+
+#wordList li {
+  padding: 0.2em 0;
+  white-space: nowrap;
+}
+
+
+#wordList li span {
+  vertical-align: middle;
+}
+
+#wordList li:first-child .up,
+#wordList li:last-child .down {
+  visibility: hidden;
+}
+
+input[type="text"] {
+  font-size: 0.8em;
+  width: 8em;
+}
+
+.button {
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  cursor: pointer;
+  display: inline-block;
+  height: 1em;
+  margin-left: 0.5em;
+  width: 1em;
+}
+
+[type="button"].up,
+[type="button"].down {
+  background-color: transparent;
+  color: #999;
+}
+
+[type="button"].up:hover,
+[type="button"].down:hover {
+  background-color: #666;
+  border-color: transparent;
+  color: #ccc;
+}
+
+[type="button"].up:active,
+[type="button"].down:active {
+  background-color: #333;
+  border-color: transparent;
+  color: #fff;
+}
+
+@media screen {
+  article {
+    padding: 0 1em;
+  }
+}
+
+@media print {
+  #wrapper {
+    display: block;
+    flex-direction: column;
+    height: auto;
+    overflow: auto;
+    position: relative;
+    width: 100%;
+  }
+
+  #editor {
+    display: none;
+  }
+
+  article {
+    overflow: hidden;
+  }
+
+  #editor,
+  article {
+    margin: 0;
+  }
+}
+    </style>
+  </head>
+  <body>
+    <div id="wrapper" class="sml">
+      <article></article>
+      <form name="" id="editor">
+        <div class="toolbar">
+          <div>
+            <label for="charToggler"></label><input type="checkbox" name="charToggler" id="charToggler" onchange="toggleChar()">
+          </div>
+          <div>
+            <label onclick="alert('yes')">单元排序</label>
+          </div>
+        </div>
+        <div class="toolbar">
+          <div>
+            <select name="unitSelector" id="unitSelector" onchange="selectUnit(this.value)"></select>
+            <input type="button" value="删除单元" onclick="deleteUnit()">
+          </div>
+          <div>
+            <input type="button" value="添加单元" onclick="addUnit()">
+            </div>
+        </div>
+        <form name="newList">
+          <div class="toolbar">
+            <div>
+              <label for="newTitle" style="font-size: 0.8em;">标题：</label><input type="text" name="unitTitle" id="unitTitle">
+            </div>
+            <div>
+              <input type="button" value="添加词组" onclick="addWord()">
+              <input type="button" value="保存">
+            </div>
+          </div>
+        <ol id="wordList"></ol>
+      </form>
+    </div>
+    <script>
+let article = document.querySelector('article'),
+  checkbox = document.querySelector('input[name=charToggler]'),
+  label = document.querySelector('label[for=charToggler]'),
+  unitSelector = document.getElementById('unitSelector'),
+  unitTitle = document.getElementById('unitTitle'),
+  wordList = document.getElementById('wordList'),
+  newList = document.getElementById('newList')
+
+let currentUnitIndex = 0
+
+init()
+
+function init() {
+  setup()
+  toggleChar()
+  selectUnit(currentUnitIndex)
+}
+
+
+function setup() {
+  article.innerHTML = ''
+  unitSelector.innerHTML = ''
+
+  data.forEach((unit, i) => {
+    let section = document.createElement('section'),
+      h1 = document.createElement('h1'),
+      div = document.createElement('div'),
+      option = document.createElement('option')
+
+    h1.innerText = unit.title
+    section.append(h1)
+    option.value = i
+    option.innerText = unit.title
+    unitSelector.appendChild(option)
+
+    div.className = 'unit'
+
+    unit.text.forEach((word) => {
+      let wordTag = document.createElement('span')
+      wordTag.className = 'word'
+
+      let letters = word[0].split(''),
+        py = word[1].split(' ')
+
+      letters.forEach((letter, index) => {
+        let letterTag = document.createElement('span'),
+          pinyinTag = document.createElement('span'),
+          charTag = document.createElement('span')
+          
+          letterTag.className = 'letter'
+          pinyinTag.className = 'pinyin'
+          charTag.className = 'mi'
+
+          pinyinTag.textContent = py[index]
+          charTag.innerText = letter
+
+        letterTag.append(pinyinTag)
+        letterTag.append(charTag)
+
+        wordTag.append(letterTag)
+      })
+
+      div.append(wordTag)
+    })
+
+    section.append(div)
+
+    article.append(section)
+  })
+}
+
+function toggleChar() {
+  if (checkbox.checked) {
+    text = "显示汉字"
+    article.className = 'hideChar'
+  } else {
+    text = "隐藏汉字"
+    article.className = ''
+  }
+
+  label.innerText = text
+}
+
+function selectUnit(val) {
+  currentUnitIndex = parseInt(val)
+  currentUnit = data[currentUnitIndex]
+  editUnit()
+}
+
+function addUnit() {
+  currentUnit = {
+    title: '',
+    text: [["", ""]]
+  }
+  editUnit()
+}
+
+function editUnit() {
+  unitTitle.value = currentUnit.title
+  prepList(currentUnit.text)
+}
+
+function deleteUnit() {
+  let title = data[currentUnitIndex].title
+  if (confirm('确定要删除' + title + '吗？')) {
+    data.splice(currentUnitIndex, 1)
+    setup()
+  }
+  
+  selectUnit(0)
+}
+
+function prepList(text) {
+  let html = ''
+
+  text.forEach((word, i) => {
+    html += prepWord(word[0], word[1], i)
+  })
+
+  wordList.innerHTML = html
+}
+
+function prepWord(char, pinyin, index) {
+  let html = ''
+
+  html += '<li>'
+  html += '<input type="text" value="' + char + '">'
+  html += '&nbsp;<input type="text" value="' + pinyin + '">'
+  html += '<input type="button" value="删除">'
+  html += '<input type="button" class="up" value="⇧" onclick="nudge(' + index + ', -1)">'
+  html += '<input type="button" class="down" value="⇩" onclick="nudge(' + index + ', 1)">'
+  html += '</li>'
+
+  return html
+}
+
+function nudge(index, direction) {
+  let arr = data[currentUnitIndex].text,
+    tmp = arr[index]
+  
+  arr.splice(index, 1)
+  arr.splice(index + direction, 0, tmp)
+
+  setup()
+  prepList(arr)
+}
+
+function addWord() {
+  currentUnit.text.push(["", ""])
+  prepList(currentUnit.text)
+}
+    </script>
+  </body>
+</html>
